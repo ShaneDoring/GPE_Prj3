@@ -48,6 +48,11 @@ public class FSMExample : MonoBehaviour
                 
                 ChangeState("Seek");
             }
+             if (CanHear(GameManager.Instance.player) == true)
+            {
+                Debug.LogWarning("I Can Hear You");
+                ChangeState("Seek");
+            }
 
 
         }
@@ -60,6 +65,15 @@ public class FSMExample : MonoBehaviour
             if (health < healthCutOff)
             {
                 ChangeState("Rest");
+            }
+            if (CanSee(GameManager.Instance.player) == false)
+            {
+                ChangeState("Idle");
+            }
+
+            if (CanHear(GameManager.Instance.player) == false)
+            {
+                ChangeState("Idle");
             }
            // else if (Vector3.Distance(transform.position, targetPosition) >= aiSenseRadius)
            //   {
@@ -147,8 +161,8 @@ public class FSMExample : MonoBehaviour
          {
              // Use a raycast to see if there are obstructions between us and the target.
              RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, vectorToTarget,visionMaxDistance);
-            Debug.LogWarning("CASTING MY RAY AT " + target);
-             if (hitInfo.collider.gameObject.CompareTag("Player") == target)
+            
+             if (hitInfo.collider.gameObject == target)
              {
                 
                 return true;
