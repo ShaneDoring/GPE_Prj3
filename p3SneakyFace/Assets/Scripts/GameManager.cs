@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
     public GameObject playerSpawnPoint;
     public GameObject playerDeathScreen;
     public GameObject gameOverScreen;
+    public GameObject enemy;
+    public GameObject enemyPrefab;
+    public GameObject enemySpawnPoint;
     public int lives = 3;
 
     private static GameManager instance;
@@ -72,6 +75,7 @@ public class GameManager : MonoBehaviour
         {
             //Do the State Behaviour
             SpawnPlayer();
+            SpawnEnemy();
             //Check for Transitions
             ChangeState("Gameplay");
         }
@@ -139,8 +143,13 @@ public class GameManager : MonoBehaviour
 
     public void SpawnPlayer()
     {
-        //Add the player character tot he world
+        //Add the player character to the world
         player = Instantiate(playerPrefab, playerSpawnPoint.transform.position, Quaternion.identity);
+    }
+
+    public void SpawnEnemy()
+    {
+        enemy = Instantiate(enemyPrefab, enemySpawnPoint.transform.position, Quaternion.identity);
     }
 
     public void Gameplay()

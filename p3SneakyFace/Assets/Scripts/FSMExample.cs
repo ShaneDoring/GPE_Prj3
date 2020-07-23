@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class FSMExample : MonoBehaviour
 {
@@ -11,45 +12,61 @@ public class FSMExample : MonoBehaviour
     public float health;
     public float healthCutOff;
     public float moveSpeed;
+    public float rotationSpeed;
     public float healingRate;
     public float maxHealth;
     public float hearingDistance; //how far the object can hear from
     public float fieldOfView=90f;
-    public float visionMaxDistance = 40f;
+    public float visionMaxDistance = 4f;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (AIState == "Idle")
+
+        
+
+
+            if (AIState == "Idle")
         {
             //Do behaviour
             Idle();
             //Checks for transition
-            if(Vector3.Distance(transform.position,targetPosition)< aiSenseRadius)
+            //  if (Vector3.Distance(transform.position, targetPosition) < aiSenseRadius)
+            //   {
+            //       ChangeState("Seek");
+            //  }
+            //  if (CanSee(GameManager.Instance.player)==true)
+            CanSee(GameManager.Instance.player);
             {
                 ChangeState("Seek");
             }
+
+
         }
         else if (AIState == "Seek")
         {
             // Do the Seek Behaviour
             Seek();
+
             //Check for transitions
             if (health < healthCutOff)
             {
                 ChangeState("Rest");
             }
-            else if(Vector3.Distance(transform.position,targetPosition)>= aiSenseRadius)
-            {
-                ChangeState ("Idle");
-            }
+           // else if (Vector3.Distance(transform.position, targetPosition) >= aiSenseRadius)
+           //   {
+           ///       ChangeState ("Idle");
+            //  }
+           
+
+
         }
         else if (AIState == "Rest")
         {
@@ -70,13 +87,22 @@ public class FSMExample : MonoBehaviour
     void Idle()
     {
         // Do nothing
+        
+        
     }
-
+    
     void Seek()
     {
-        
+        //targetPosition = GameManager.Instance.player.transform.position;
+
+        targetPosition = GameManager.Instance.player.transform.position;
         Vector3 vectorToTarget = targetPosition - transform.position;
+       //targetPosition = GameManager.Instance.player.transform.position;//TODO:Check for errors
+        Vector3 directionToLook = targetPosition - transform.position;
+        transform.right = directionToLook;
+       // transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
         transform.position += vectorToTarget.normalized * moveSpeed*Time.deltaTime;
+       
     }
 
     void Rest()
@@ -109,25 +135,29 @@ public class FSMExample : MonoBehaviour
         return false;
     }
 
-    private bool CanSee(GameObject target)
-    {
-        Vector3 vectorToTarget = target.transform.position - transform.position;
+      private bool CanSee(GameObject target)
+     {
+         Vector3 vectorToTarget = target.transform.position - transform.position;
 
-        float angleToTarget = Vector3.Angle(vectorToTarget, transform.up); 
+         float angleToTarget = Vector3.Angle(vectorToTarget, transform.right); //TODO: FIX this if the orientation does not match with sprite
 
-        //Check if the target is within the field of view 
-        if (angleToTarget < fieldOfView)
-        {
-            // Use a raycast to see if there are obstructions between us and the target.
-            RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, vectorToTarget,visionMaxDistance);
-
-            if (hitInfo.collider.gameObject == target)
-            {
+         //Check if the target is within the field of view 
+         if (angleToTarget < fieldOfView)
+         {
+             // Use a raycast to see if there are obstructions between us and the target.
+             RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, vectorToTarget,visionMaxDistance);
+            Debug.LogWarning("CASTING MY RAY AT " + target);
+             if (hitInfo.collider.gameObject.CompareTag("Player") == target)
+             {
+                
                 return true;
-            }
-            
-        }
+               
+             }
+         }
+        
         return false;
+     
+   
     }
 }
 
