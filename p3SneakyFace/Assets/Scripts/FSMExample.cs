@@ -42,9 +42,10 @@ public class FSMExample : MonoBehaviour
             //   {
             //       ChangeState("Seek");
             //  }
-            //  if (CanSee(GameManager.Instance.player)==true)
-            CanSee(GameManager.Instance.player);
+             if (CanSee(GameManager.Instance.player)==true)
+            
             {
+                
                 ChangeState("Seek");
             }
 
