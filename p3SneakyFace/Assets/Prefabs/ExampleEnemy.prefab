@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4316488537254136978}
   m_Layer: 0
   m_Name: ExampleEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55,7 +55,7 @@ MonoBehaviour:
   rotationSpeed: 0
   healingRate: 1
   maxHealth: 20
-  hearingDistance: 0
+  hearingDistance: 2
   fieldOfView: 45
   visionMaxDistance: 20
 --- !u!212 &4558425741067644332

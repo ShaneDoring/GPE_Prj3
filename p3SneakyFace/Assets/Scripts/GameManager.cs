@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
     {
         if (gameState=="Start Screen")
         {
+            lives = 3;
             //Do the State Behaviour
             StartScreen();
             //Check for Transitions
@@ -87,6 +88,7 @@ public class GameManager : MonoBehaviour
             //Check for Transitions
             if (player==null && lives > 0)
             {
+                lives -= 1;
                 ChangeState("Player Death");
             }
             else if(player==null && lives <= 0)
@@ -102,6 +104,7 @@ public class GameManager : MonoBehaviour
             //Check for Transitions
             if (Input.anyKeyDown)
             {
+                playerDeathScreen.SetActive(false);
                 ChangeState("Spawn Player");
             }
         }
@@ -110,10 +113,16 @@ public class GameManager : MonoBehaviour
             //Do the State Behaviour
             GameOver();
             //Check for Transitions
-            if (Input.anyKeyDown)
+            if (Input.GetKey(KeyCode.Space))
             {
+                gameOverScreen.SetActive(false);
                 ChangeState("Start Screen");
             }
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
+
         }
         else
         {
@@ -137,6 +146,8 @@ public class GameManager : MonoBehaviour
 
         //Turn off menu
         titleScreen.SetActive(false);
+        
+
         //Turn on Game UI
         gameUI.SetActive(true);
     }

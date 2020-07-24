@@ -36,4 +36,23 @@ public class PlayerMovement : MonoBehaviour
             tf.Translate(Vector3.left * backStepMoveSpeed * Time.deltaTime, Space.Self);
         }
     }
+
+
+    private void OnCollisionEnter2D(Collision2D target)
+    {
+       if (target.gameObject.tag.Equals("Enemy") == true)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Destroy(this.gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.player = null;
+    }
 }

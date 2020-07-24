@@ -29,7 +29,7 @@ public class FSMExample : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        DestroyAllEnemies();
         
 
 
@@ -42,17 +42,22 @@ public class FSMExample : MonoBehaviour
             //   {
             //       ChangeState("Seek");
             //  }
-             if (CanSee(GameManager.Instance.player)==true)
-            
+
+            if (GameManager.Instance.player != null)
             {
-                
-                ChangeState("Seek");
+                if (CanSee(GameManager.Instance.player) == true)
+
+                {
+                    Debug.LogWarning("I can See You");
+                    ChangeState("Seek");
+                }
+                if (CanHear(GameManager.Instance.player) == true)
+                {
+                    Debug.LogWarning("I Can Hear You");
+                    ChangeState("Seek");
+                }
             }
-             if (CanHear(GameManager.Instance.player) == true)
-            {
-                Debug.LogWarning("I Can Hear You");
-                ChangeState("Seek");
-            }
+        
 
 
         }
@@ -109,8 +114,11 @@ public class FSMExample : MonoBehaviour
     void Seek()
     {
         //targetPosition = GameManager.Instance.player.transform.position;
-
-        targetPosition = GameManager.Instance.player.transform.position;
+        if (GameManager.Instance.player != null)
+        {
+            targetPosition = GameManager.Instance.player.transform.position;
+        }
+       
         Vector3 vectorToTarget = targetPosition - transform.position;
        //targetPosition = GameManager.Instance.player.transform.position;//TODO:Check for errors
         Vector3 directionToLook = targetPosition - transform.position;
@@ -152,6 +160,7 @@ public class FSMExample : MonoBehaviour
 
       private bool CanSee(GameObject target)
      {
+        
          Vector3 vectorToTarget = target.transform.position - transform.position;
 
          float angleToTarget = Vector3.Angle(vectorToTarget, transform.right); //TODO: FIX this if the orientation does not match with sprite
@@ -171,8 +180,17 @@ public class FSMExample : MonoBehaviour
          }
         
         return false;
-     
-   
     }
+
+    private void DestroyAllEnemies()
+    {
+        if (GameManager.Instance.player == null)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+   
+
+
 }
 
