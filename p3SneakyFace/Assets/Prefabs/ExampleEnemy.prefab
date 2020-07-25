@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4558425741067644332}
   - component: {fileID: 5306192117331037056}
   - component: {fileID: 4316488537254136978}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ExampleEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ MonoBehaviour:
   maxHealth: 20
   hearingDistance: 2
   fieldOfView: 45
-  visionMaxDistance: 20
+  visionMaxDistance: 5
 --- !u!212 &4558425741067644332
 SpriteRenderer:
   m_ObjectHideFlags: 0
